@@ -17,7 +17,7 @@ class App extends Component {
   state = {
     showBackdrop: false,
     showMobileNav: false,
-    isAuth: true, // TODO : بعد از پیاده سازی ثبت نام باید پاک بشه
+    isAuth: false, // TODO : بعد از پیاده سازی ثبت نام باید پاک بشه
     token: null,
     userId: null,
     authLoading: false,
@@ -109,8 +109,8 @@ class App extends Component {
   signupHandler = (event, authData) => {
     event.preventDefault();
     this.setState({ authLoading: true });
-    fetch('URL', {
-      method: 'PUT',
+    fetch('http://localhost:8080/api/signup', {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
