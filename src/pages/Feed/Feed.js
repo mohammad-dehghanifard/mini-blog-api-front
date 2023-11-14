@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import Socket from "socket.io-client";
 
 import Post from '../../components/Feed/Post/Post';
 import Button from '../../components/Button/Button';
@@ -72,6 +73,7 @@ class Feed extends Component {
           totalPosts: resData.totalItems,
           postsLoading: false
         });
+        Socket("http://localhost:8080")
       })
       .catch(this.catchError);
   };
