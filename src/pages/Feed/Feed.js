@@ -38,8 +38,9 @@ class Feed extends Component {
     const socket = OpenSocket("http://localhost:8080");
     socket.on("post",(data) => {
       if(data.action === "create"){
-        console.log(data);
         this.addPost(data.post);
+      }else if(data.action === "update"){
+        this.updatePost(data.post);
       }
     })
   }
@@ -60,6 +61,18 @@ class Feed extends Component {
     });
   };
 
+  updatePost = post => {
+    this.setState(prevState => {
+      const updatedPosts = [...prevState.posts];
+      const updatedPostIndex = updatedPosts.findIndex(p => p._id === post._id);
+      if (updatedPostIndex > -1) {
+        updatedPosts[updatedPostIndex] = post;
+      }
+      return {
+        posts: updatedPosts
+      };
+    });
+  };
 
   loadPosts = direction => {
     if (direction) {
@@ -176,17 +189,8 @@ class Feed extends Component {
           image: resData.post.image
         };
         this.setState(prevState => {
-          let updatedPosts = [...prevState.posts];
-          if (prevState.editPost) {
-            const postIndex = prevState.posts.findIndex(
-              p => p._id === prevState.editPost._id
-            );
-            updatedPosts[postIndex] = post;
-          } else if (prevState.posts.length < 2) {
-            updatedPosts = prevState.posts.concat(post);
-          }
+
           return {
-            posts: updatedPosts,
             isEditing: false,
             editPost: null,
             editLoading: false
